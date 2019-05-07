@@ -3,6 +3,8 @@ package org.jt.sell.service.Impl;
 import lombok.extern.slf4j.Slf4j;
 import org.jt.sell.dataobject.OrderDetail;
 import org.jt.sell.dto.OrderDTO;
+import org.jt.sell.enums.OrderStatusEnum;
+import org.jt.sell.enums.PayStatusEnum;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -27,7 +30,7 @@ public class OrderServiceImplTest {
     private OrderServiceImpl orderService;
 
     private final String BUYER_OPENID ="41515";
-
+    private final  String ORDER_ID ="1556783489394653401";
 
     @Test
     public void create() {
@@ -53,7 +56,9 @@ public class OrderServiceImplTest {
         orderDetailList.add(o2);
 
         orderDTO.setOrderDetailList(orderDetailList);
+        orderDTO.setCreateTime(new Date());
 
+        orderDTO.setUpdateTime(new Date());
         OrderDTO result = orderService.create(orderDTO);
         log.info("【创建订单】result={}", result);
         Assert.assertNotNull(result);
@@ -75,14 +80,23 @@ public class OrderServiceImplTest {
 
     @Test
     public void cancel() {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.cancel(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.CANCEL.getCode(), result.getOrderStatus());
     }
 
     @Test
-    public void finish() {
+    public void finish() throws Exception {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.finish(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.FINISHED.getCode(), result.getOrderStatus());
     }
 
     @Test
-    public void paid() {
+    public void paid() throws Exception {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.paid(orderDTO);
+        Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(), result.getPayStatus());
     }
 
     @Test
