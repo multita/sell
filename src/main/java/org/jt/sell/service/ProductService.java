@@ -2,6 +2,7 @@ package org.jt.sell.service;
 
 import org.jt.sell.dataobject.ProductInfo;
 import org.jt.sell.dto.CartDTO;
+import org.jt.sell.dto.OrderDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,10 +13,6 @@ public interface ProductService {
 
     ProductInfo findOne(String productId);
 
-    /**
-     * 查询所有在架商品列表
-     * @return
-     */
     List<ProductInfo> findUpAll();
 
     Page<ProductInfo> findAll(Pageable pageable);
@@ -27,4 +24,10 @@ public interface ProductService {
     //减库存
     void decreaseStock(List<CartDTO> cartDTOList);
 
+//    /** 查询商品列表. */
+//    Page<ProductInfo> findList(Pageable pageable);
+
+
+    ProductInfo onSale(String productId);
+    ProductInfo offSale(String productId);
 }

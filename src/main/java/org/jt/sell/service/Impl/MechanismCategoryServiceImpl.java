@@ -4,6 +4,8 @@ import org.jt.sell.converter.DTO2MechanismCategoryConverter;
 import org.jt.sell.converter.MechanismCategory2DTOConverter;
 import org.jt.sell.dataobject.MechanismCategory;
 import org.jt.sell.dto.MechanismFrameDTO;
+import org.jt.sell.enums.FrameEnum;
+import org.jt.sell.exception.FrameException;
 import org.jt.sell.repository.MechanismCategoryRepository;
 import org.jt.sell.service.MechanismCategoryService;
 import org.omg.CORBA.INTERNAL;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @ProjectName: sell
@@ -58,14 +61,40 @@ public class MechanismCategoryServiceImpl implements MechanismCategoryService {
     }
 
     @Override
-    public void addNode(MechanismFrameDTO mechanismFrameDTO) {
+    public  MechanismFrameDTO addNode(MechanismFrameDTO mechanismFrameDTO) {
+
+        MechanismCategory mechanismCategory =repository.findByCategoryType(mechanismFrameDTO.getFatherType());
+        if (mechanismCategory==null){
+            throw new FrameException(FrameEnum.NOT_EXIST);
+        }
+        mechanismFrameDTO.setCategoryLevel(mechanismCategory.getCategoryLevel()+1);
+        mechanismFrameDTO.setCategoryType(mechanismCategory.getCategoryType()
+                +(mechanismCategory.getSonsNumber()+1)*(int)Math.pow(10,3-mechanismCategory.getCategoryLevel()));
+        mechanismCategory.setSonsNumber(mechanismCategory.getSonsNumber()+1);
+        repository.save(mechanismCategory);
         repository.save(DTO2MechanismCategoryConverter.convert(mechanismFrameDTO));
+        return findAll();
     }
 
     @Override
-    public void deleteNode(MechanismFrameDTO mechanismFrameDTO) {
-        MechanismCategory mechanismCategory =repository.findByCategoryType(mechanismFrameDTO.getCategoryType());
-        repository.deleteById(mechanismCategory.getCategoryId());
+    public  MechanismFrameDTO deleteNode(MechanismFrameDTO mechanismFrameDTO) {
+
+        try{
+            MechanismCategory mechanismCategory =repository.findByCategoryType(mechanismFrameDTO.getCategoryType());
+
+            if (mechanismCategory==null){
+                throw new FrameException(FrameEnum.NOT_EXIST);
+            }
+            MechanismCategory fatherMechanism =repository.findByCategoryType(mechanismCategory.getFatherType());
+            fatherMechanism.setSonsNumber(fatherMechanism.getSonsNumber()-1);
+            repository.save(fatherMechanism);
+            repository.deleteById(mechanismCategory.getCategoryId());
+
+            return findAll();
+        }catch (NoSuchElementException e){
+            throw new FrameException(FrameEnum.NOT_EXIST);
+        }
+
 
     }
 }

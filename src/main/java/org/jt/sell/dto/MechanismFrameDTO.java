@@ -35,7 +35,16 @@ public class MechanismFrameDTO {
 
     public MechanismFrameDTO(){
     }
+    public MechanismFrameDTO( Integer categoryType) {
+        this.categoryType = categoryType;
 
+    }
+    public MechanismFrameDTO(String categoryName, Integer fatherType) {
+        this.categoryName = categoryName;
+
+        this.fatherType = fatherType;
+        this.sonsNumber =0;
+    }
     public MechanismFrameDTO(String categoryName, Integer categoryType, Integer categoryLevel, Integer fatherType) {
         this.categoryName = categoryName;
         this.categoryType = categoryType;

@@ -17,5 +17,7 @@ import java.util.List;
 public interface UserService {
 
     List<User> findAll();
-    User findByEmail(String email);
+    User login(User user);
+    User regiter(User user);
+
 }

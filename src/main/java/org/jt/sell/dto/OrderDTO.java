@@ -1,11 +1,13 @@
 package org.jt.sell.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.jt.sell.dataobject.OrderDetail;
 import org.jt.sell.enums.OrderStatusEnum;
 import org.jt.sell.enums.PayStatusEnum;
+import org.jt.sell.utils.EnumUtil;
 
 import javax.persistence.Id;
 import java.math.BigDecimal;
@@ -48,4 +50,23 @@ public class OrderDTO {
     private Date updateTime;
 
     private List<OrderDetail> orderDetailList;
+
+//    @JsonIgnore
+//    public OrderStatusEnum getOrderStatusEnum(){
+//        return OrderStatusEnum.getOrderStatusEnum(orderStatus);
+//    }
+//
+//    @JsonIgnore
+//    public PayStatusEnum getPayStatusEnum(){
+//        return PayStatusEnum.getPayStatusEnum(payStatus);
+//    }
+    @JsonIgnore
+    public OrderStatusEnum getOrderStatusEnum(){
+        return EnumUtil.getByCode(orderStatus,OrderStatusEnum.class);
+    }
+
+    @JsonIgnore
+    public PayStatusEnum getPayStatusEnum(){
+        return EnumUtil.getByCode(payStatus,PayStatusEnum.class);
+    }
 }

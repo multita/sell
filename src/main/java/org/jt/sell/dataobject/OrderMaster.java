@@ -1,5 +1,6 @@
 package org.jt.sell.dataobject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
@@ -47,4 +48,6 @@ public class OrderMaster {
 
     /** 更新时间. */
     private Date updateTime;
+
+
 }

@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -106,8 +107,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO findOne(String orderId) {
+        OrderMaster orderMaster = null;
+        try{
+             orderMaster = orderMasterRepository.findById(orderId).get();
+        }catch (NoSuchElementException e){
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
 
-        OrderMaster orderMaster = orderMasterRepository.findById(orderId).get();
         if (orderMaster == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
@@ -226,6 +232,11 @@ public class OrderServiceImpl implements OrderService {
     }
     @Override
     public Page<OrderDTO> findList(Pageable pageable) {
-        return null;
+
+         Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
+         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
+
+        return new PageImpl<OrderDTO>(orderDTOList, pageable, orderMasterPage.getTotalElements());
+
     }
 }

@@ -6,6 +6,11 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/sell?useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,3 +20,11 @@ spring:
         enable_lazy_load_no_trans=true:
   jackson:
     default-property-inclusion: non_null
+
+  freemarker:
+    template-loader-path=classpath:/templates/:
+
+#日志配置待补充
+
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml

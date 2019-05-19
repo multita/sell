@@ -15,6 +15,6 @@ import java.util.List;
  */
 public interface MechanismCategoryService {
     MechanismFrameDTO findAll();
-    void addNode(MechanismFrameDTO mechanismFrameDTO);
-    void deleteNode(MechanismFrameDTO mechanismFrameDTO);
+    MechanismFrameDTO addNode(MechanismFrameDTO mechanismFrameDTO);
+    MechanismFrameDTO deleteNode(MechanismFrameDTO mechanismFrameDTO);
 }

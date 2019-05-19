@@ -43,7 +43,7 @@ public class MechanismCategoryServiceImplTest {
 
     @Test
     public void deleteNode() {
-        MechanismFrameDTO mechanismFrameDTO = new MechanismFrameDTO("616研究院",2,1,0);
+        MechanismFrameDTO mechanismFrameDTO = new MechanismFrameDTO(4010);
         mechanismCategoryService.deleteNode(mechanismFrameDTO);
     }
 }

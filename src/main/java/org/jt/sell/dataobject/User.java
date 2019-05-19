@@ -30,12 +30,15 @@ public class User {
     private String email;
 
     /** 身份证*/
-    private Integer cardid;
+    private String  cardid;
 
     public User() {
     }
-
-    public User(String name, String password, String email, Integer cardid) {
+    public User(String email ,String password) {
+        this.password = password;
+        this.email = email;
+    }
+    public User(String name, String password, String email, String cardid) {
         this.name = name;
         this.password = password;
         this.email = email;
